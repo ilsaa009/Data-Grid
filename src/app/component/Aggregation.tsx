@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DataGridPro, GridColDef, GridRowsProp, GridAggregationModel, GridRowGroupingModel } from '@mui/x-data-grid-pro';
+import { DataGridPro, GridColDef, GridRowsProp, GridColumnGroupingModel } from '@mui/x-data-grid-pro';
+
 import Box from '@mui/material/Box';
 import { Paper } from '@mui/material';
 
@@ -18,14 +19,8 @@ const rows: GridRowsProp = [
   { id: 5, name: 'Eve', department: 'HR', jobTitle: 'HR Manager', salary: 95000 },
 ];
 
-const aggregationModel: GridAggregationModel = {
-  salary: {
-    aggregation: 'sum', 
-  },
-};
-
-const RowGroupingGridWithAggregation = () => {
-  const [groupingModel, setGroupingModel] = React.useState<GridRowGroupingModel>([]);
+const Aggregation = () => {
+  const [groupingModel, setGroupingModel] = React.useState<GridColumnGroupingModel>([]);
 
   return (
     <Box
@@ -60,7 +55,6 @@ const RowGroupingGridWithAggregation = () => {
           }}
           rowGroupingModel={groupingModel}
           onRowGroupingModelChange={(newGroupingModel) => setGroupingModel(newGroupingModel)}
-          aggregationModel={aggregationModel} 
           sx={{
             boxShadow: 2,
             borderRadius: 1,
@@ -72,4 +66,4 @@ const RowGroupingGridWithAggregation = () => {
   );
 };
 
-export default RowGroupingGridWithAggregation;
+export default Aggregation;
