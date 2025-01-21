@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGridPro, GridColDef, GridRowsProp } from '@mui/x-data-grid-pro';
+import { DataGridPro, GridColDef, GridRowsProp, GridPaginationModel } from '@mui/x-data-grid-pro';
 import Box from '@mui/material/Box';
 import { Paper } from '@mui/material';
 import axios from 'axios';
@@ -13,8 +13,10 @@ const columns: GridColDef[] = [
 
 const LazyLoadingDataGrid = () => {
   const [rows, setRows] = React.useState<GridRowsProp>([]);
-  const [pageSize, setPageSize] = React.useState(5);
-  const [page, setPage] = React.useState(0);
+  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+    page: 0,        
+    pageSize: 5,    
+  });
   const [totalCount, setTotalCount] = React.useState(0);
 
   const fetchData = async (page: number, pageSize: number) => {
@@ -35,15 +37,21 @@ const LazyLoadingDataGrid = () => {
   };
 
   React.useEffect(() => {
-    fetchData(page, pageSize);
-  }, [page, pageSize]);
+    fetchData(paginationModel.page, paginationModel.pageSize);
+  }, [paginationModel]);
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
   };
 
   const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      pageSize: newPageSize,
+    }));
   };
 
   return (
@@ -71,16 +79,12 @@ const LazyLoadingDataGrid = () => {
         <DataGridPro
           rows={rows}
           columns={columns}
-          pageSize={pageSize}
           rowCount={totalCount}
           paginationMode="server"
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          paginationModel={{
-            pageSize: pageSize,
-            page: page,
-          }}
+          paginationModel={paginationModel}  
+          onPaginationModelChange={setPaginationModel}  
           loading={rows.length === 0}
+          pageSizeOptions={[5, 10, 25]}  
           sx={{
             boxShadow: 2,
             borderRadius: 1,

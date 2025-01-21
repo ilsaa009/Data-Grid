@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { DataGridPro, GridColDef, GridRowsProp, GridColumnGroupingModel } from '@mui/x-data-grid-pro';
-
-import Box from '@mui/material/Box';
-import { Paper } from '@mui/material';
+import { DataGridPro, GridColDef, GridRowsProp, GridPaginationModel } from '@mui/x-data-grid-pro';
+import { Box, Paper } from '@mui/material';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', width: 180 },
@@ -20,45 +18,44 @@ const rows: GridRowsProp = [
 ];
 
 const Aggregation = () => {
-  const [groupingModel, setGroupingModel] = React.useState<GridColumnGroupingModel>([]);
+  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+    page: 0,  
+    pageSize: 5, 
+  });
 
   return (
     <Box
       sx={{
         width: '100%',
         height: '100vh',
-        backgroundColor: '#ffffff', 
+        backgroundColor: '#ffffff',
         display: 'flex',
-        justifyContent: 'center', 
-        alignItems: 'center', 
+        justifyContent: 'center',
+        alignItems: 'center',
         padding: 2,
       }}
     >
       <Paper
         sx={{
           width: '90%',
-          maxWidth: 1200, 
+          maxWidth: 1200,
           backgroundColor: '#ffffff',
-          boxShadow: 3, 
+          boxShadow: 3,
           padding: 2,
-          borderRadius: 2, 
+          borderRadius: 2,
         }}
       >
         <DataGridPro
           rows={rows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          groupingColDef={{
-            headerName: 'Group by Department',
-            renderCell: (params) => params.value,
-          }}
-          rowGroupingModel={groupingModel}
-          onRowGroupingModelChange={(newGroupingModel) => setGroupingModel(newGroupingModel)}
+          paginationModel={paginationModel} 
+          onPaginationModelChange={setPaginationModel} 
+          pageSizeOptions={[5, 10, 25]}  
+          pagination
           sx={{
             boxShadow: 2,
             borderRadius: 1,
-            backgroundColor: '#ffffff', 
+            backgroundColor: '#ffffff',
           }}
         />
       </Paper>

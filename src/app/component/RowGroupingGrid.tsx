@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { DataGridPro, GridColDef, GridRowsProp, GridRowGroupingModel } from '@mui/x-data-grid-pro';
-import Box from '@mui/material/Box';
-import { Paper } from '@mui/material';
+import { DataGridPro, GridColDef, GridRowsProp, GridPaginationModel } from '@mui/x-data-grid-pro';
+import { Box, Paper } from '@mui/material';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', width: 180 },
   { field: 'department', headerName: 'Department', width: 180 },
   { field: 'jobTitle', headerName: 'Job Title', width: 180 },
-  { field: 'salary', headerName: 'Salary', width: 180 },
+  { field: 'salary', headerName: 'Salary', width: 180, type: 'number' },
 ];
 
 const rows: GridRowsProp = [
@@ -19,45 +18,45 @@ const rows: GridRowsProp = [
 ];
 
 const RowGroupingGrid = () => {
-  const [groupingModel, setGroupingModel] = React.useState<GridRowGroupingModel>([]);
+  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 5,
+  });
 
   return (
     <Box
       sx={{
         width: '100%',
         height: '100vh',
-        backgroundColor: '#ffffff', 
+        backgroundColor: '#ffffff',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center', 
+        alignItems: 'center',
         padding: 2,
       }}
     >
       <Paper
         sx={{
           width: '90%',
-          maxWidth: 1200, 
-          backgroundColor: '#ffffff', 
-          boxShadow: 3, 
+          maxWidth: 1200,
+          backgroundColor: '#ffffff',
+          boxShadow: 3,
           padding: 2,
-          borderRadius: 2, 
+          borderRadius: 2,
         }}
       >
         <DataGridPro
           rows={rows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          groupingColDef={{
-            headerName: 'Group by Department',
-            renderCell: (params) => params.value,
-          }}
-          rowGroupingModel={groupingModel}
-          onRowGroupingModelChange={(newGroupingModel) => setGroupingModel(newGroupingModel)}
+          rowCount={rows.length}
+          paginationMode="server" // Server pagination if data is fetched from server
+          paginationModel={paginationModel} // Use paginationModel state
+          onPaginationModelChange={setPaginationModel} // Handle pagination model changes
+          pageSizeOptions={[5, 10, 25]} // Customize page size options
           sx={{
             boxShadow: 2,
             borderRadius: 1,
-            backgroundColor: '#ffffff', 
+            backgroundColor: '#ffffff',
           }}
         />
       </Paper>
