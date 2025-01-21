@@ -12,7 +12,7 @@ const Page = () => {
   return (
     <div>
       <h1>Tree Data in DataGridPro</h1>
-      <ListView />
+      <TreeDataGrid />
     </div>
   );
 };
